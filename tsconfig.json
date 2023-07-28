@@ -1,0 +1,19 @@
+{
+  "compilerOptions": {
+    "target": "ESNext",
+    "module": "ESNext",
+    "outDir": "./dist", 
+    "rootDir": ".",
+    "strict": true,
+    "esModuleInterop": true,
+    "moduleResolution": "node"
+  },
+  "include": [
+    "controllers/*.ts",
+    "models/*.ts",
+    "server.ts" 
+  ],
+  "exclude": [
+    "node_modules"
+  ]
+} 
