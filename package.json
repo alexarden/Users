@@ -4,6 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "server": "node server.js", 
+    "update": "(rm server.js && tsc server.ts)",
+    "client": "(cd client && npm start)",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
