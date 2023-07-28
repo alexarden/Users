@@ -12,6 +12,18 @@ const getUsers = async (req, res) => {
   }
 };
 
+const getUser = async (req, res) => {
+    const email = req.body.email
+
+    try {
+      const users = await User.findOne({ email: email}).exec();   
+      res.status(200).json(users);   
+    } catch (err) {
+      res.status(500).json({ message: err.message });
+    }
+  };
+
+
 const addUser = async (req, res) => {
     const user = new User(req.body); 
   
@@ -21,6 +33,22 @@ const addUser = async (req, res) => {
     } catch (err) {
       res.status(400).json({ message: err.message });
     }
-  };
+};
 
-module.exports = { getUsers, addUser };
+const updateUser = async (req, res) => {
+    const username = req.body.email; 
+    const update = req.body.update; 
+    console.log({
+        email:username,
+        password: update  
+    })
+    try {
+      const updatedUser = await User.updateOne({email: username},{password: update}); 
+      res.status(201).json(updatedUser); 
+    } catch (err) {
+      res.status(400).json({ message: err.message });
+    }
+};
+
+
+module.exports = { getUsers, addUser, updateUser ,getUser};
