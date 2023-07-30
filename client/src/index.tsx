@@ -6,6 +6,8 @@ import Container from 'react-bootstrap/Container';
 import { AuthProvider } from 'react-auth-kit';
 import styled from 'styled-components';
 import { BrowserRouter } from 'react-router-dom';
+import { store } from './redux/store';
+import { Provider } from 'react-redux';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -31,9 +33,11 @@ root.render(
     >
     <AppContainer>
        <Container> 
+       <Provider store={store}>
         <BrowserRouter>
         <App />
         </BrowserRouter>
+        </Provider>
       </Container>
     </AppContainer>
    </AuthProvider>
