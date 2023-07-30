@@ -1,7 +1,7 @@
 import { Route, Routes } from 'react-router-dom';
 import './App.scss'; 
 import Login from './components/Login';
-import Users from './components/Users';
+import IsAdmin from './components/IsAdmin'
 import { RequireAuth } from 'react-auth-kit';
 import ErrorPage from './components/ErrorPage';
 
@@ -18,7 +18,7 @@ function App() {
     
       <Routes>
         <Route path='/' element={
-          <RequireAuth loginPath={'/login'}><Users/></RequireAuth>}>
+          <RequireAuth loginPath={'/login'}><IsAdmin/></RequireAuth>}>
         </Route>
         <Route path='/login' element={<Login/>}></Route>
         <Route path='/*' element={<ErrorPage/>}></Route>

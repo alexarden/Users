@@ -30,7 +30,7 @@ function Login() {
 
         signIn({
           token: response.data.token,
-          expiresIn: 3600,
+          expiresIn: 86400, 
           tokenType: 'Bearer',
           authState: {email: email}
         })

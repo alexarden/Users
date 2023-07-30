@@ -10,7 +10,7 @@ export type User = {
   email: string,
   password: string,
   role: string
-}
+};
 
 const UserWrapper = styled.div`
     border-bottom: 1px solid white;
@@ -21,14 +21,14 @@ const UserWrapper = styled.div`
     button{
         margin: 5px 5px;
     }
-` 
+` ;
 
 const UsersContainer = styled.div`
   max-width: 1000px;
   margin: 0 auto;
-` 
+` ;
 
-function Users() {
+function AdminUsers() {
   const [users, setUsers] = useState<User[] | null>()
   const signOut = useSignOut()
   const navigate = useNavigate() 
@@ -36,18 +36,33 @@ function Users() {
   useEffect(()=> {
     const url = 'http://127.0.0.1:5000/users'; 
     axios.get(url).then(response => setUsers(response.data))
-  })
-
+  }, []);
 
   const handleLogout = () => {
     signOut();
     navigate('/login');
-  }
+  };
+
+  const handleDelete = (id: string) => {
+    // TODO add delete user if admin
+    console.log('Deleted', id);
+  };
+
+  const handleEdit = (id: string) => {
+    // TODO add edit user if admin 
+    console.log('Edited', id); 
+  };
+
+  const handleAddUser = () => {
+    // TODO add add user if admin 
+    console.log('Add user'); 
+  };
 
 
   return ( 
     <UsersContainer>
         <UserWrapper>
+            <Button variant="success" onClick={handleAddUser}>Add User</Button>
             <Button variant="warning" onClick={handleLogout}>Logout</Button>
         </UserWrapper> 
         
@@ -57,7 +72,11 @@ function Users() {
                     <div>
                       <div>{user.email}</div>
                       <div>{user.role}</div>  
-                    </div>              
+                    </div> 
+                    <div>
+                        <Button variant="light" onClick={() => handleEdit(user._id)}>Edit</Button>
+                        <Button variant="danger" onClick={() => handleDelete(user._id)}>Delete</Button>
+                    </div>                
                 </UserWrapper>  
             </div>
             )}</div>
@@ -67,6 +86,6 @@ function Users() {
    
   )
 
-}
+};
 
-export default Users; 
+export default AdminUsers; 
