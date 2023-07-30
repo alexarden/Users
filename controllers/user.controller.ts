@@ -1,9 +1,10 @@
 import express from "express"; 
 import User from "../models/users.model.js";   
+import jwt, { Secret } from 'jsonwebtoken';
+import dotenv from 'dotenv';
+dotenv.config();  
+ 
 
-/**
- * It's an async function that uses the Userr model to find all user and then returns a status of 200 with the activities in the response body.
- */
 export const getUsers = async (req: express.Request, res: express.Response): Promise<void> => { 
   try {
     const users = await User.find();   
@@ -13,15 +14,35 @@ export const getUsers = async (req: express.Request, res: express.Response): Pro
   }  
 };
 
-export const getUser = async (req: express.Request, res: express.Response): Promise<void> => {
-    const email = req.body.email
-
+export const validateUser = async (req: express.Request, res: express.Response): Promise<void> => {
+  
     try {
-      const users = await User.findOne({ email: email}).exec();   
-      res.status(200).json(users);   
+      const {email, password} = req.body
+      console.log({email: email, password: password})
+      const user = await User.findOne({ email: email}).exec();  
+
+      if(!user){
+        console.log('Faild to get user');
+        res.status(400).json({massage: "Wrong e-mail, please try again."})
+        return
+      }
+      
+      if(user?.password !== password){
+        console.log('Faild to match password');
+        res.status(400).json({massage: "Wrong password"}) 
+        return
+      }
+
+      const jwtToken = jwt.sign({
+        id: user?.id,
+        email: user?.email
+      }, process.env.JWT_TOKEN as Secret)    
+      
+      res.status(200).json({message: "User loged in", token: jwtToken});   
     } catch (err: any) { 
       res.status(500).json({ message: err.message });
     }
+    
   };
 
 

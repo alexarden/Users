@@ -1,5 +1,5 @@
 import {useEffect, useState} from 'react'; 
-import './App.scss';
+import './App.scss'; 
 import axios from 'axios';
 
 export type User = {
@@ -12,7 +12,7 @@ export type User = {
 function App() {
   const [users, setUsers] = useState<User[] | null>()
   useEffect(()=> {
-    const url = 'http://localhost:5000/users'; 
+    const url = 'http://127.0.0.1:5000/users'; 
     axios.get(url).then(response => setUsers(response.data))
   })
   return (
