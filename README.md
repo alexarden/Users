@@ -1,3 +1,3 @@
 # Users
-## TODOS : Add Auth logic
-## TODOS : Add client CRUD forms
+## TODOS : Add client CRUD forms.
+## TODOS : Add server admin logic.

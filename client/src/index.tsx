@@ -15,6 +15,8 @@ const AppContainer = styled.div`
   display : flex;
   align-items: center;
   height: 100vh;
+  background-color: #212529;
+  color: white;
 `
 
 
