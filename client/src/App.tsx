@@ -1,6 +1,8 @@
-import {useEffect, useState} from 'react'; 
+import { Route, Routes } from 'react-router-dom';
 import './App.scss'; 
-import axios from 'axios';
+import Login from './components/Login';
+import Users from './components/Users';
+import { RequireAuth } from 'react-auth-kit';
 
 export type User = {
   _id: string,
@@ -10,15 +12,15 @@ export type User = {
 }
 
 function App() {
-  const [users, setUsers] = useState<User[] | null>()
-  useEffect(()=> {
-    const url = 'http://127.0.0.1:5000/users'; 
-    axios.get(url).then(response => setUsers(response.data))
-  })
+ 
   return (
-    <div className='App'>
-     {users ? users.map((user) => <div>{user.email}</div>) : null}
-    </div>
+    
+      <Routes>
+        <Route path='/' element={
+          <RequireAuth loginPath={'/login'}><Users/></RequireAuth>}>
+        </Route>
+        <Route path='/login' element={<Login/>}></Route>
+      </Routes>
   )
 }
 

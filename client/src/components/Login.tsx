@@ -2,14 +2,17 @@ import React, { useState } from 'react';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import axios from 'axios';
+import { useSignIn } from 'react-auth-kit';
 
 function Login() { 
     const [email , setEmail] = useState('')
     const [password , setPassword] = useState('')
+    const signIn = useSignIn()
 
-    function handleSubmit(e: React.FormEvent<HTMLFormElement>){
-        e.preventDefault()
-        axios({
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+      e.preventDefault()
+      try{
+        const response = await axios({
           method: 'post',
           url: 'http://localhost:5000/login',
           headers: {}, 
@@ -17,7 +20,23 @@ function Login() {
             email: email, 
             password: password
           }
-        }).then(res => console.log(res));
+        })
+
+        if(response){
+          console.log(response)
+        }
+
+        signIn({
+          token: response.data.token,
+          expiresIn: 3600,
+          tokenType: 'Bearer',
+          authState: {email: email}
+        })
+
+      }catch(error: any){
+        console.log(error.message)
+      }
+      
     }
      
   return  (
