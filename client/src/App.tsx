@@ -3,6 +3,7 @@ import './App.scss';
 import Login from './components/Login';
 import Users from './components/Users';
 import { RequireAuth } from 'react-auth-kit';
+import ErrorPage from './components/ErrorPage';
 
 export type User = {
   _id: string,
@@ -20,6 +21,7 @@ function App() {
           <RequireAuth loginPath={'/login'}><Users/></RequireAuth>}>
         </Route>
         <Route path='/login' element={<Login/>}></Route>
+        <Route path='/*' element={<ErrorPage/>}></Route>
       </Routes>
   )
 }

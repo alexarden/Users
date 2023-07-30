@@ -3,11 +3,13 @@ import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import axios from 'axios';
 import { useSignIn } from 'react-auth-kit';
+import { useNavigate } from 'react-router-dom';
 
 function Login() { 
-    const [email , setEmail] = useState('')
-    const [password , setPassword] = useState('')
-    const signIn = useSignIn()
+    const [email , setEmail] = useState('');
+    const [password , setPassword] = useState('');
+    const navigate = useNavigate();
+    const signIn = useSignIn();
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault()
@@ -33,6 +35,8 @@ function Login() {
           authState: {email: email}
         })
 
+        navigate('/')
+        
       }catch(error: any){
         console.log(error.message)
       }
