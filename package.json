@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "server": "node dist/server.js",
-    "update": "(if [ -d dist ]; then rm -Rf dist; fi && tsc)", 
+    "update": "(if [ -d dist ]; then rm -Rf dist; fi && tsc)",
     "client": "(cd client && npm start)",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -22,7 +22,6 @@
     "mongoose": "^7.4.1"
   },
   "devDependencies": {
-    "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
     "@types/cors": "^2.8.13"
   }
 }
