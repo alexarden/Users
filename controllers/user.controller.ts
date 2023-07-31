@@ -38,7 +38,7 @@ export const validateUser = async (req: express.Request, res: express.Response):
         email: user?.email
       }, process.env.JWT_TOKEN as Secret)    
       
-      res.status(200).json({message: "User loged in", token: jwtToken});   
+      res.status(200).json({message: "User loged in", token: jwtToken, user: user});    
     } catch (err: any) { 
       res.status(500).json({ message: err.message });
     }

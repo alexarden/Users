@@ -20,10 +20,10 @@ export const userSlice = createSlice({
   },
   reducers: {
     setUser: (state, action: PayloadAction<UserState>) => {
-      state.user.id += action.payload
-      state.user.email += action.payload
-      state.user.password += action.payload
-      state.user.role += action.payload
+      state.user.id = action.payload.id
+      state.user.email = action.payload.email
+      state.user.password = action.payload.password
+      state.user.role = action.payload.role
     },
   }, 
 }) 

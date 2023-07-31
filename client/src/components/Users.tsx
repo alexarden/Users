@@ -56,7 +56,6 @@ function Users() {
                 <UserWrapper>
                     <div>
                       <div>{user.email}</div>
-                      <div>{user.role}</div>  
                     </div>              
                 </UserWrapper>  
             </div>

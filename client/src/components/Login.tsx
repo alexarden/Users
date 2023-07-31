@@ -4,12 +4,18 @@ import Button from 'react-bootstrap/Button';
 import axios from 'axios';
 import { useSignIn } from 'react-auth-kit';
 import { useNavigate } from 'react-router-dom';
+import { useSelector, useDispatch} from 'react-redux';
+import {setUser} from '../redux/user';
 
 function Login() { 
     const [email , setEmail] = useState('');
     const [password , setPassword] = useState('');
     const navigate = useNavigate();
     const signIn = useSignIn();
+    const dispatch = useDispatch();
+    const { user } = useSelector((state: any) => state.user);
+    
+
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault()
@@ -25,7 +31,7 @@ function Login() {
         })
 
         if(response){
-          console.log(response)
+          dispatch(setUser(response.data.user))
         }
 
         signIn({

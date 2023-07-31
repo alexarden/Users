@@ -2,17 +2,15 @@ import Users from './Users';
 import AdminUsers from './AdminUsers';
 import { useSelector } from 'react-redux';
 
-
-
 function IsAdmin(){
-    const { user } = useSelector((state: any) => state.user)
-    const isAdmin = false;
+    const { user } = useSelector((state: any) => state.user);
+    const isAdmin = user.role === 'admin' ? true : false;
+ 
+    return (<>
+        {isAdmin ? <AdminUsers/> : <Users/>} 
+    </>) 
 
-    // return (<>
-    //     {isAdmin ? <AdminUsers/> : <Users/>} 
-    // </>)
-
-    return (<div>{user.email}</div>) 
+    // return (<div>{user.role}</div>) 
 
 };
 
