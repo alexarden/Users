@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { useSignOut } from 'react-auth-kit';
 import Button from 'react-bootstrap/Button';
 import styled from 'styled-components';
+import {useAuthUser} from 'react-auth-kit'
 
 export type User = {
   _id: string,
@@ -29,14 +30,19 @@ const UsersContainer = styled.div`
 ` ;
 
 function AdminUsers() {
-  const [users, setUsers] = useState<User[] | null>()
-  const signOut = useSignOut()
-  const navigate = useNavigate() 
-  const URL = 'https://users-fullstack-crud.onrender.com'
+  const [users, setUsers] = useState<User[]>([]);
+  const signOut = useSignOut();
+  const navigate = useNavigate() ;
+  const URL = process.env.REACT_APP_API_URL;
+  const auth = useAuthUser();
 
   useEffect(()=> { 
     const url = `${URL}/users`; 
-    axios.get(url).then(response => setUsers(response.data))
+    axios.get(url, {
+      headers: {
+        "x-access-token": auth()?.token
+      }
+    }).then(response => setUsers(response.data))
   }, []);
 
   const handleLogout = () => {
@@ -65,7 +71,7 @@ function AdminUsers() {
         <UserWrapper>
             <Button variant="success" onClick={handleAddUser}>Add User</Button>
             <Button variant="warning" onClick={handleLogout}>Logout</Button>
-        </UserWrapper> 
+        </UserWrapper>  
         
         <div>
             <div>{users?.map(user => <div key={user._id}>

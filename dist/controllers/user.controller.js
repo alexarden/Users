@@ -17,23 +17,35 @@ export const validateUser = async (req, res) => {
         console.log({ email: email, password: password });
         const user = await User.findOne({ email: email }).exec();
         if (!user) {
-            console.log('Faild to get user');
-            res.status(400).json({ massage: "Wrong e-mail, please try again." });
+            console.log("User does not exist, make sure email is correct or sign up.");
+            res.status(401).json({ massage: "User does not exist, make sure email is correct or sign up." });
             return;
         }
         if (user?.password !== password) {
-            console.log('Faild to match password');
-            res.status(400).json({ massage: "Wrong password" });
+            console.log("wrong password");
+            res.status(401).json({ massage: "wrong password" });
             return;
         }
         const jwtToken = jwt.sign({
-            id: user?.id,
-            email: user?.email
-        }, process.env.JWT_TOKEN);
-        res.status(200).json({ message: "User loged in", token: jwtToken, user: user });
+            id: user?.id
+        }, process.env.JWT_TOKEN, { expiresIn: 86400 });
+        const result = {
+            id: user.id,
+            email: user.email,
+            password: '****',
+            role: user.role,
+            token: jwtToken
+        };
+        res.status(200).json({
+            message: "User logged in",
+            auth: true,
+            token: jwtToken,
+            result: result,
+            expire: 86400
+        });
     }
     catch (err) {
-        res.status(500).json({ message: err.message });
+        res.status(500).json({ auth: false, message: err.message });
     }
 };
 export const addUser = async (req, res) => {

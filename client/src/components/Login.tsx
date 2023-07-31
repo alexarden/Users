@@ -7,15 +7,15 @@ import { useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch} from 'react-redux';
 import {setUser} from '../redux/user';
 
+
 function Login() { 
     const [email , setEmail] = useState('');
     const [password , setPassword] = useState('');
     const navigate = useNavigate();
     const signIn = useSignIn();
     const dispatch = useDispatch();
-    const { user } = useSelector((state: any) => state.user);
-    
-    const URL = 'https://users-fullstack-crud.onrender.com'
+   
+    const URL = process.env.REACT_APP_API_URL
 
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -24,28 +24,32 @@ function Login() {
         const response = await axios({
           method: 'post',
           url: `${URL}/login`,
-          headers: {},  
+          headers: {},   
           data: {
             email: email, 
             password: password
           }
         })
 
-        if(response){
-          dispatch(setUser(response.data.user))
+        if(response.status === 200){
+          console.log(response.data); 
+          dispatch(setUser(response.data.result))
+
+          signIn({ 
+            token: response.data.token,
+            expiresIn: response.data.expire, 
+            tokenType: 'Bearer',
+            authState: response.data.result
+          })
+
+          navigate('/')
         }
 
-        signIn({
-          token: response.data.token,
-          expiresIn: 86400, 
-          tokenType: 'Bearer',
-          authState: {email: email}
-        })
-
-        navigate('/')
+    
         
       }catch(error: any){
         console.log(error.message)
+        console.log(error.response.data)
       }
       
     }

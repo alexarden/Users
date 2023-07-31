@@ -12,6 +12,7 @@ dotenv.config();
 const PORT = process.env.PORT || 5000;
 const MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/todoapiDB"; 
 import {validateUser, getUsers, addUser, deleteUser, updateUser}  from "./controllers/user.controller.js";  
+import { verifyJwt } from './middlewares/verifyJwt.js';
  
 
 app.use(express.json());
@@ -23,15 +24,18 @@ app.get("/", (_req: express.Request, _res: express.Response) => {
 });
 
 // GET requests
-app.get("/users",getUsers); 
+app.get("/users",verifyJwt,getUsers);  
+app.get("/isAuth", verifyJwt, (_req: express.Request, _res: express.Response) => {
+  _res.json({'message': 'User is Authenticated', auth : true})
+})
 
 // POST requests
 app.post("/login", validateUser);
-app.post("/add", addUser);  
-app.post("/update", updateUser);
+app.post("/add",verifyJwt, addUser);  
+app.post("/update",verifyJwt, updateUser);
 
 // DELETE requests
-app.delete("/delete", deleteUser);
+app.delete("/delete",verifyJwt, deleteUser);
 
 
 /* Connecting to the database and then starting the server. */

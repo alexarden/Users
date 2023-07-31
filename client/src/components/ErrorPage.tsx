@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import Button from 'react-bootstrap/Button';
 
-function App() {
+function ErrorPage() {
   const navigate = useNavigate() ;
 
   const handleClick = () => {
@@ -18,4 +18,4 @@ function App() {
 
 };
 
-export default App; 
+export default ErrorPage; 

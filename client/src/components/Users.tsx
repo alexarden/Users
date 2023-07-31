@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { useSignOut } from 'react-auth-kit';
 import Button from 'react-bootstrap/Button';
 import styled from 'styled-components';
+import {useAuthUser} from 'react-auth-kit'
 
 export type User = {
   _id: string,
@@ -29,43 +30,63 @@ const UsersContainer = styled.div`
 ` 
 
 function Users() {
-  const [users, setUsers] = useState<User[] | null>()
-  const signOut = useSignOut()
-  const navigate = useNavigate() 
-  const URL = 'https://users-fullstack-crud.onrender.com'
+  const [users, setUsers] = useState<User[]>([]);
+  const signOut = useSignOut();
+  const navigate = useNavigate();
+  const URL = process.env.REACT_APP_API_URL;
+  const auth = useAuthUser();
 
-  useEffect(()=> {
-    const url = `${URL}/users`; 
-    axios.get(url).then(response => setUsers(response.data))
-  })
+  useEffect(() => {
+    
+    const fetchData = async () => {
+      const users = await axios.get(`${URL}/users`, {
+        headers: {
+          "x-access-token" : auth()?.token
+        }
+      });
+      console.log(users);
+      setUsers(users.data)    
+    }
+  
+    // call the function
+    fetchData()
+      // make sure to catch any error
+      .catch(console.error);
+  }, []) 
+
+   
+   
 
 
   const handleLogout = () => {
     signOut();
     navigate('/login');
   }
+  
 
 
   return ( 
+
     <UsersContainer>
-        <UserWrapper>
-            <Button variant="warning" onClick={handleLogout}>Logout</Button>
-        </UserWrapper> 
+
+      <UserWrapper>
+        <Button variant="warning" onClick={handleLogout}>Logout</Button>
+      </UserWrapper> 
+
+      <div>
+          <div>{users?.map(user => <div key={user._id}>
+              <UserWrapper>
+                  <div>
+                    <div>{user.email}</div>
+                  </div>              
+              </UserWrapper>  
+          </div>
+          )}</div>
+      </div>
         
-        <div>
-            <div>{users?.map(user => <div key={user._id}>
-                <UserWrapper>
-                    <div>
-                      <div>{user.email}</div>
-                    </div>              
-                </UserWrapper>  
-            </div>
-            )}</div>
-           
-        </div>
     </UsersContainer>  
-   
-  )
+  
+  ) 
 
 }
 
