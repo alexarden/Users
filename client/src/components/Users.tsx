@@ -32,9 +32,10 @@ function Users() {
   const [users, setUsers] = useState<User[] | null>()
   const signOut = useSignOut()
   const navigate = useNavigate() 
+  const URL = 'https://users-fullstack-crud.onrender.com'
 
   useEffect(()=> {
-    const url = 'http://127.0.0.1:5000/users'; 
+    const url = `${URL}/users`; 
     axios.get(url).then(response => setUsers(response.data))
   })
 

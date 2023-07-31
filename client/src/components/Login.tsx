@@ -15,6 +15,7 @@ function Login() {
     const dispatch = useDispatch();
     const { user } = useSelector((state: any) => state.user);
     
+    const URL = 'https://users-fullstack-crud.onrender.com'
 
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -22,8 +23,8 @@ function Login() {
       try{
         const response = await axios({
           method: 'post',
-          url: 'http://localhost:5000/login',
-          headers: {}, 
+          url: `${URL}/login`,
+          headers: {},  
           data: {
             email: email, 
             password: password
