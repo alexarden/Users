@@ -77,15 +77,12 @@ export const addUser = async (req: express.Request, res: express.Response): Prom
 };
 
 export const updateUser = async (req: express.Request, res: express.Response): Promise<void> => {
-    const username = req.body.email; 
-    const update = req.body.update; 
-    console.log({
-        email:username,
-        password: update  
-    })
+    const user = req.body.user
+    console.log('in update');
     try {
-      const updatedUser = await User.updateOne({email: username},{password: update}); 
-      res.status(201).json(updatedUser); 
+      const updatedUser = await User.updateOne({email: user.email},{email: user.email, password: user.password, role: user.role}); 
+      console.log(updatedUser);
+      res.status(201).json({edited: true});  
     } catch (err: any) {
       res.status(400).json({ message: err.message });
     } 

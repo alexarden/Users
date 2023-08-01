@@ -66,14 +66,11 @@ export const addUser = async (req, res) => {
     }
 };
 export const updateUser = async (req, res) => {
-    const username = req.body.email;
-    const update = req.body.update;
-    console.log({
-        email: username,
-        password: update
-    });
+    const user = req.body.user;
+    console.log('in update');
     try {
-        const updatedUser = await User.updateOne({ email: username }, { password: update });
+        const updatedUser = await User.updateOne({ email: user.email }, { email: user.email, password: user.password, role: user.role });
+        console.log(updateUser);
         res.status(201).json(updatedUser);
     }
     catch (err) {

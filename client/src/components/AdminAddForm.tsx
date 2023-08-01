@@ -22,7 +22,7 @@ const ButtonWrapper = styled.div`
     display: flex;
     justify-content: space-between;
 `
-function AdminForm(props: any) {
+function AdminAddForm(props: any) {
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -83,6 +83,7 @@ function AdminForm(props: any) {
                     "x-access-token": auth()?.token
                   }
                 }).then(response => setUsers(response.data)) 
+                statusTimeout() 
             }
 
 
@@ -156,4 +157,4 @@ function AdminForm(props: any) {
 
 }
 
-export { AdminForm }
+export { AdminAddForm }
