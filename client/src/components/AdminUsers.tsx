@@ -32,7 +32,8 @@ const UsersContainer = styled.div`
 
 function AdminUsers() {
   const [users, setUsers] = useState<User[]>([]);
-  const [fresher, setFresher] = useState(false)
+  const [fresher, setFresher] = useState(false);
+  const [formDisplay, setFormDisplay] = useState('none'); 
   const signOut = useSignOut();
   const navigate = useNavigate();
   const auth = useAuthUser();
@@ -69,7 +70,12 @@ function AdminUsers() {
       })
 
       if(response){
-        setFresher(!fresher)
+        const url = `${URL}/users`; 
+        axios.get(url, {
+          headers: {
+            "x-access-token": auth()?.token
+          }
+        }).then(response => setUsers(response.data))
       }
   
       console.log(response); 
@@ -86,19 +92,21 @@ function AdminUsers() {
 
   const handleAddUser = () => {
     // TODO add add user if admin 
-    console.log('Add user'); 
+    console.log(formDisplay);
+    setFormDisplay('block');
   };
 
 
   return ( 
     <UsersContainer>
+      
+         <AdminForm formDisplay={formDisplay} setFormDisplay={setFormDisplay}/>
 
-        <AdminForm/>
         <UserWrapper>
             <Button variant="success" onClick={handleAddUser}>Add User</Button>
             <Button variant="warning" onClick={handleLogout}>Logout</Button>
         </UserWrapper>  
-        
+
         <div>
             <div>{users?.map(user => <div key={user._id}>
                 <UserWrapper>
@@ -114,7 +122,6 @@ function AdminUsers() {
                 </UserWrapper>  
             </div>
             )}</div>
-           
         </div>
     </UsersContainer>  
    
