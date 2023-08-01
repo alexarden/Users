@@ -34,18 +34,18 @@ function AdminEditForm(props: any) {
   const [status, setStatus] = useState("Test");
   const [textColor, setTextColor] = useState("#ffffff00");
   const auth = useAuthUser();
-  let getUser = true; 
+  const [getUser, setGetUser] = useState(true);
 
   useEffect(() => {
     if (getUser) {
       const user = JSON.parse(localStorage.getItem("user")!);
-      console.log("user ", user);
+      console.log(getUser);
       if (user) {
         setEmail(user.email);
         setPassword(user.password);
         setRole(user.role);
         setId(user._id);
-        getUser = false;
+        setGetUser(false); 
       }
     }
   });
@@ -100,6 +100,13 @@ function AdminEditForm(props: any) {
           })
           .then((response) => setUsers(response.data));
         statusTimeout();
+        setGetUser(true);
+        localStorage.removeItem('user');
+        setEmail('');
+        setPassword('');
+        setRole('');
+        setId('');
+        
       }
     } catch (err: any) {
       console.log(err.message);
@@ -113,6 +120,14 @@ function AdminEditForm(props: any) {
   const handleHide = () => {
     console.log(formDisplay);
     setFormDisplay("none");
+    setGetUser(true);
+    localStorage.removeItem('user')
+    setEmail('');
+    setPassword('');
+    setRole('');
+    setId(''); 
+    console.log(getUser);
+    
   };
 
   return (
