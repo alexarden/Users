@@ -20,5 +20,4 @@ export const verifyJwt = (_req, _res, next) => {
             }
         });
     }
-    return false;
 };

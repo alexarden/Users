@@ -5,6 +5,7 @@ import { useSignOut } from 'react-auth-kit';
 import Button from 'react-bootstrap/Button';
 import styled from 'styled-components';
 import {useAuthUser} from 'react-auth-kit'
+import { AdminForm } from './AdminForm';
 
 export type User = {
   _id: string,
@@ -31,10 +32,12 @@ const UsersContainer = styled.div`
 
 function AdminUsers() {
   const [users, setUsers] = useState<User[]>([]);
+  const [fresher, setFresher] = useState(false)
   const signOut = useSignOut();
-  const navigate = useNavigate() ;
-  const URL = process.env.REACT_APP_API_URL;
+  const navigate = useNavigate();
   const auth = useAuthUser();
+
+  const URL = process.env.REACT_APP_API_URL; 
 
   useEffect(()=> { 
     const url = `${URL}/users`; 
@@ -50,9 +53,30 @@ function AdminUsers() {
     navigate('/login');
   };
 
-  const handleDelete = (id: string) => {
-    // TODO add delete user if admin
-    console.log('Deleted', id);
+  const handleDelete = async (id: string) => {
+    try{
+      const response = await axios({
+        method: 'delete',
+        url: `${URL}/delete`,
+        headers: {
+          "x-access-token": auth()?.token
+        },   
+        data: {
+          role: auth()?.role,
+          userId : id
+        }
+       
+      })
+
+      if(response){
+        setFresher(!fresher)
+      }
+  
+      console.log(response); 
+    }catch(err:any){
+      console.log(err.message) 
+      console.log(err.response.data)
+    }
   };
 
   const handleEdit = (id: string) => {
@@ -68,6 +92,8 @@ function AdminUsers() {
 
   return ( 
     <UsersContainer>
+
+        <AdminForm/>
         <UserWrapper>
             <Button variant="success" onClick={handleAddUser}>Add User</Button>
             <Button variant="warning" onClick={handleLogout}>Logout</Button>
@@ -79,6 +105,7 @@ function AdminUsers() {
                     <div>
                       <div>{user.email}</div>
                       <div>{user.role}</div>  
+                      
                     </div> 
                     <div>
                         <Button variant="light" onClick={() => handleEdit(user._id)}>Edit</Button>

@@ -1,10 +1,12 @@
 import Users from './Users';
 import AdminUsers from './AdminUsers';
 import { useSelector } from 'react-redux';
+import {useAuthUser} from 'react-auth-kit'
 
 function IsAdmin(){
-    const { user } = useSelector((state: any) => state.user);
-    const isAdmin = user.role === 'admin' ? true : false;
+    const auth = useAuthUser()
+    
+    const isAdmin = auth()?.role === 'admin' ? true : false;
  
     return (<>
         {isAdmin ? <AdminUsers/> : <Users/>} 

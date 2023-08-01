@@ -49,10 +49,17 @@ export const validateUser = async (req, res) => {
     }
 };
 export const addUser = async (req, res) => {
-    const user = new User(req.body);
+    const { user } = req.body;
     try {
-        const newUser = await user.save();
-        res.status(201).json(newUser);
+        const isUserExist = await User.findOne({ email: user?.email });
+        if (isUserExist) {
+            res.status(409).json({ succeeded: false, message: 'User already exist' });
+        }
+        else {
+            const newUser = new User(user);
+            const savedUser = await newUser.save();
+            res.status(201).json(savedUser);
+        }
     }
     catch (err) {
         res.status(400).json({ message: err.message });
@@ -74,13 +81,13 @@ export const updateUser = async (req, res) => {
     }
 };
 export const deleteUser = async (req, res) => {
-    const username = req.body.email;
+    const userId = req.body.userId;
     console.log({
-        email: username,
+        userId: userId,
     });
     try {
-        const updatedUser = await User.deleteOne({ email: username });
-        res.status(201).json(updatedUser);
+        const deletedUser = await User.deleteOne({ _id: userId });
+        res.status(201).json({ message: deletedUser });
     }
     catch (err) {
         res.status(400).json({ message: err.message });

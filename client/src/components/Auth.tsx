@@ -3,18 +3,30 @@ import {useAuthUser} from 'react-auth-kit'
 import { Button } from 'react-bootstrap'
 
 function Auth(){
-  const auth = useAuthUser()
-  const URL = process.env.REACT_APP_API_URL
+  const auth = useAuthUser();
+
+  const URL = process.env.REACT_APP_API_URL;
 
   const handleIsAuth = async () => {
-    const response = await axios.get(`${URL}/isAuth`, {
-      headers: {
-        // "x-access-token": 'sdfsad'
-        "x-access-token": auth()?.token
-      }
-    })
-
-    console.log(response);
+    try{
+      const response = await axios({
+        method: 'post',
+        url: `${URL}/isAuth`,
+        headers: {
+          "x-access-token": auth()?.token
+        },   
+        data: {
+          role: auth()?.role
+        }
+       
+      })
+  
+      console.log(response);
+    }catch(err:any){
+      console.log(err.message)
+      console.log(err.response.data)
+    }
+   
     
   }
 

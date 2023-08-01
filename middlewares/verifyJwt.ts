@@ -21,7 +21,5 @@ export const verifyJwt = (_req: express.Request, _res : express.Response, next: 
             }
         })
     }
-
-    return false
 }
 

@@ -60,11 +60,17 @@ export const validateUser = async (req: express.Request, res: express.Response):
 
 
 export const addUser = async (req: express.Request, res: express.Response): Promise<void> => {
-    const user = new User(req.body); 
+    const {user} = req.body 
    
     try {
-      const newUser = await user.save();
-      res.status(201).json(newUser);
+      const isUserExist = await User.findOne({email: user?.email})
+      if(isUserExist) {
+        res.status(409).json({succeeded: false, message: 'User already exist'})
+      }else{
+        const newUser = new User(user)
+        const savedUser = await newUser.save();
+        res.status(201).json(savedUser); 
+      }
     } catch (err: any) {
       res.status(400).json({ message: err.message });
     }
@@ -87,13 +93,13 @@ export const updateUser = async (req: express.Request, res: express.Response): P
 
 
 export const deleteUser = async (req: express.Request, res: express.Response): Promise<void> => {
-    const username = req.body.email; 
+    const userId = req.body.userId; 
     console.log({
-        email:username,
+      userId: userId,
     })
     try {
-      const updatedUser = await User.deleteOne({ email: username});
-      res.status(201).json(updatedUser); 
+      const deletedUser = await User.deleteOne({ _id: userId}); 
+      res.status(201).json({message: deletedUser});   
     } catch (err: any) {
       res.status(400).json({ message: err.message });
     } 
