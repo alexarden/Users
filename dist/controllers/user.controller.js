@@ -70,8 +70,8 @@ export const updateUser = async (req, res) => {
     console.log('in update');
     try {
         const updatedUser = await User.updateOne({ email: user.email }, { email: user.email, password: user.password, role: user.role });
-        console.log(updateUser);
-        res.status(201).json(updatedUser);
+        console.log(updatedUser);
+        res.status(201).json({ edited: true });
     }
     catch (err) {
         res.status(400).json({ message: err.message });
