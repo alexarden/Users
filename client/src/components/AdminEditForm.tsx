@@ -45,7 +45,7 @@ function AdminEditForm(props: any) {
         setPassword(user.password);
         setRole(user.role);
         setId(user._id);
-        setGetUser(false); 
+        setGetUser(false);
       }
     }
   });
@@ -101,12 +101,11 @@ function AdminEditForm(props: any) {
           .then((response) => setUsers(response.data));
         statusTimeout();
         setGetUser(true);
-        localStorage.removeItem('user');
-        setEmail('');
-        setPassword('');
-        setRole('');
-        setId('');
-        
+        localStorage.removeItem("user");
+        setEmail("");
+        setPassword("");
+        setRole("");
+        setId("");
       }
     } catch (err: any) {
       console.log(err.message);
@@ -121,13 +120,12 @@ function AdminEditForm(props: any) {
     console.log(formDisplay);
     setFormDisplay("none");
     setGetUser(true);
-    localStorage.removeItem('user')
-    setEmail('');
-    setPassword('');
-    setRole('');
-    setId(''); 
+    localStorage.removeItem("user");
+    setEmail("");
+    setPassword("");
+    setRole("");
+    setId("");
     console.log(getUser);
-    
   };
 
   return (
@@ -136,8 +134,9 @@ function AdminEditForm(props: any) {
         <Form.Group className="mb-3">
           <Form.Label>Email address</Form.Label>
           <Form.Control
+            disabled
             required
-            type="email"
+            type="email" 
             placeholder={email}
             value={email}
             onChange={(e) => setEmail(e.target.value)}
