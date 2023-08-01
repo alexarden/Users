@@ -96,11 +96,19 @@ function AdminUsers() {
     setFormDisplay('block');
   };
 
+   const setUsersProp = () => {
+    const url = `${URL}/users`; 
+    axios.get(url, {
+      headers: {
+        "x-access-token": auth()?.token
+      }
+    }).then(response => setUsers(response.data))
+   } 
 
   return ( 
     <UsersContainer>
       
-         <AdminForm formDisplay={formDisplay} setFormDisplay={setFormDisplay}/>
+         <AdminForm formDisplay={formDisplay} setFormDisplay={setFormDisplay} users={users} setUsers={setUsersProp}/> 
 
         <UserWrapper>
             <Button variant="success" onClick={handleAddUser}>Add User</Button>

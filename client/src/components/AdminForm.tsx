@@ -32,6 +32,8 @@ function AdminForm(props: any) {
     const auth = useAuthUser();
     let formDisplay = props.formDisplay;
     let setFormDisplay = props.setFormDisplay;
+    let users = props.users;
+    let setUsers = props.setUsers; 
 
     
     const statusRef = useRef(status);
@@ -75,6 +77,12 @@ function AdminForm(props: any) {
             if (response.status === 201) {
                 setStatus(response.statusText)
                 setTextColor("#4be04b")
+                const url = `${URL}/users`; 
+                axios.get(url, {
+                  headers: {
+                    "x-access-token": auth()?.token
+                  }
+                }).then(response => setUsers(response.data)) 
             }
 
 
