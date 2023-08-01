@@ -1,6 +1,6 @@
 import User from "../models/users.model.js";
-import jwt from 'jsonwebtoken';
-import dotenv from 'dotenv';
+import jwt from "jsonwebtoken";
+import dotenv from "dotenv";
 dotenv.config();
 export const getUsers = async (req, res) => {
     try {
@@ -18,7 +18,11 @@ export const validateUser = async (req, res) => {
         const user = await User.findOne({ email: email }).exec();
         if (!user) {
             console.log("User does not exist, make sure email is correct or sign up.");
-            res.status(401).json({ massage: "User does not exist, make sure email is correct or sign up." });
+            res
+                .status(401)
+                .json({
+                massage: "User does not exist, make sure email is correct or sign up.",
+            });
             return;
         }
         if (user?.password !== password) {
@@ -27,22 +31,47 @@ export const validateUser = async (req, res) => {
             return;
         }
         const jwtToken = jwt.sign({
-            id: user?.id
+            id: user?.id,
         }, process.env.JWT_TOKEN, { expiresIn: 86400 });
         const result = {
             id: user.id,
             email: user.email,
-            password: '****',
+            password: "****",
             role: user.role,
-            token: jwtToken
+            token: jwtToken,
         };
         res.status(200).json({
             message: "User logged in",
             auth: true,
             token: jwtToken,
             result: result,
-            expire: 86400
+            expire: 86400,
         });
+    }
+    catch (err) {
+        res.status(500).json({ auth: false, message: err.message });
+    }
+};
+export const signUser = async (req, res) => {
+    console.log('signup');
+    try {
+        const { email, password } = req.body;
+        console.log({ email: email, password: password });
+        const user = await User.findOne({ email: email }).exec();
+        if (user) {
+            console.log("User exist");
+            res.status(401).json({ massage: "User exist" });
+            return;
+        }
+        else {
+            const newUser = new User({
+                email: email,
+                password: password,
+                role: "user",
+            });
+            const savedUser = await newUser.save();
+            res.status(201).json({ user: savedUser, message: 'signed' });
+        }
     }
     catch (err) {
         res.status(500).json({ auth: false, message: err.message });
@@ -53,7 +82,7 @@ export const addUser = async (req, res) => {
     try {
         const isUserExist = await User.findOne({ email: user?.email });
         if (isUserExist) {
-            res.status(409).json({ succeeded: false, message: 'User already exist' });
+            res.status(409).json({ succeeded: false, message: "User already exist" });
         }
         else {
             const newUser = new User(user);
@@ -67,7 +96,7 @@ export const addUser = async (req, res) => {
 };
 export const updateUser = async (req, res) => {
     const user = req.body.user;
-    console.log('in update');
+    console.log("in update");
     try {
         const updatedUser = await User.updateOne({ email: user.email }, { email: user.email, password: user.password, role: user.role });
         console.log(updatedUser);
