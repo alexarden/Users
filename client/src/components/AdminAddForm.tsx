@@ -7,20 +7,20 @@ import styled from "styled-components";
 
 
 const FormStatus = styled.div<{ $textColor?: string; }>`
-    color: ${props => props.$textColor || "#ffffff"};
-    margin: 0 auto;
-    width: fit-content;
-    font-size: 1.6rem;
+color: ${props => props.$textColor || "#ffffff"};
+margin: 0 auto;
+width: fit-content;
+font-size: 1.6rem;
 `
 
 const FormContainer = styled.div<{ $display?: string; }>`
-    display: ${props => props.$display};
-    margin-bottom: 25px;
+display: ${props => props.$display};
+margin-bottom: 25px;
 `
 
 const ButtonWrapper = styled.div`
-    display: flex;
-    justify-content: space-between;
+display: flex;
+justify-content: space-between;
 `
 function AdminAddForm(props: any) {
 
@@ -33,16 +33,16 @@ function AdminAddForm(props: any) {
     let formDisplay = props.formDisplay;
     let setFormDisplay = props.setFormDisplay;
     let users = props.users;
-    let setUsers = props.setUsers; 
+    let setUsers = props.setUsers;
 
-    
+
     const statusRef = useRef(status);
     statusRef.current = status;
-  
+
     const statusTimeout = () => {
-      setTimeout(() => {
-        setStatus('');
-      }, 2000); 
+        setTimeout(() => {
+            setStatus('');
+        }, 2000);
     };
 
 
@@ -77,13 +77,13 @@ function AdminAddForm(props: any) {
             if (response.status === 201) {
                 setStatus(response.statusText)
                 setTextColor("#4be04b")
-                const url = `${URL}/users`; 
+                const url = `${URL}/users`;
                 axios.get(url, {
-                  headers: {
-                    "x-access-token": auth()?.token
-                  }
-                }).then(response => setUsers(response.data)) 
-                statusTimeout() 
+                    headers: {
+                        "x-access-token": auth()?.token
+                    }
+                }).then(response => setUsers(response.data))
+                statusTimeout()
             }
 
 
@@ -93,7 +93,7 @@ function AdminAddForm(props: any) {
             console.log(err.response.data);
             setStatus(err.response.data.message)
             setTextColor('#cf3e3e')
-            statusTimeout() 
+            statusTimeout()
         }
 
 
@@ -150,7 +150,7 @@ function AdminAddForm(props: any) {
                     </Button>
                 </ButtonWrapper>
 
-                
+
             </Form>
         </FormContainer>
     )

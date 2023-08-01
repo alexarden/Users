@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import './index.scss'; 
-import App from './App'; 
+import './index.scss';
+import App from './App';
 import Container from 'react-bootstrap/Container';
 import { AuthProvider } from 'react-auth-kit';
 import styled from 'styled-components';
@@ -31,16 +31,16 @@ root.render(
       // IMPORTANT enable cookie secure when done.
       cookieSecure={false}
     >
-    <AppContainer>
-       <Container> 
-       <Provider store={store}>
-        <BrowserRouter>
-        <App />
-        </BrowserRouter>
-        </Provider>
-      </Container>
-    </AppContainer>
-   </AuthProvider>
+      <AppContainer>
+        <Container>
+          <Provider store={store}>
+            <BrowserRouter>
+              <App />
+            </BrowserRouter>
+          </Provider>
+        </Container>
+      </AppContainer>
+    </AuthProvider>
   </React.StrictMode>
 );
 
