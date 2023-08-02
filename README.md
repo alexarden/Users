@@ -1,5 +1,7 @@
 # Users-CRUD-App
 
+App will take some time to wake-up since it's on a free hosting plan.
+
 Client app: https://users-fullstack-crud.vercel.app/
 
 admin eamil: admin@log.in.
